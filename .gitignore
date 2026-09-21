@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+
+# Nuxt/ build output
+.nuxt
+.output
+dist
+
+# Cloudflare / Wrangler
+.wrangler
+wrangler.toml
+.vscode/.dev.urls.json
+
+# Local env
+.env
+.env.*
+!.env.example
+
+# Tests
+coverage
+test-results
+playwright-report
+
+# Misc
+.DS_Store
+*.log
