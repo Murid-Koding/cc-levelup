@@ -79,6 +79,11 @@ pnpm test:e2e
 pnpm db:generate
 pnpm db:migrate:local
 pnpm db:migrate:prod
+pnpm db:seed:local
 ```
 
 Exact commands should be finalized during Sprint 0 based on the installed package versions and Cloudflare configuration.
+
+## Development data
+
+Local seed data (`server/db/seed.sql`) uses placeholder categories and sessions. The launch category list remains an open product question (PRD #4). Do not treat seed categories as the approved taxonomy.

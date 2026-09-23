@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `session_kategoris_session_id_kategori_id_idx` ON `session_kategoris` (`session_id`,`kategori_id`);

@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [development]
   pull_request:
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
       - name: Production build
         run: pnpm build
 
-  d1-migrations:
+  d1-and-e2e:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,3 +56,12 @@ jobs:
 
       - name: Apply migrations to local D1
         run: pnpm db:migrate:local
+
+      - name: Seed local D1
+        run: pnpm db:seed:local
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: pnpm test:e2e

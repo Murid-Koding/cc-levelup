@@ -1,5 +1,9 @@
 allowBuilds:
+  better-sqlite3: true
   esbuild: true
   sharp: true
   unrs-resolver: true
   workerd: true
+minimumReleaseAgeExclude:
+  - drizzle-kit@0.31.11
+  - drizzle-orm@0.45.3
