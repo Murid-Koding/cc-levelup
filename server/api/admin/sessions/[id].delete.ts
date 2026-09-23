@@ -42,14 +42,14 @@ export default defineEventHandler(async (event) => {
       deleteSessionStmt
     ])
   } else if (
-    typeof (db as { transaction?: (cb: (tx: unknown) => unknown) => unknown }).transaction ===
-    'function'
+    typeof (db as unknown as { transaction?: (cb: (tx: unknown) => unknown) => unknown })
+      .transaction === 'function'
   ) {
     // 2. SQLite local fallback using synchronous transaction (better-sqlite3)
     interface SqliteTx {
       delete: (table: unknown) => { where: (condition: unknown) => { run: () => void } }
     }
-    ;(db as { transaction: (cb: (tx: SqliteTx) => void) => void }).transaction((tx) => {
+    ;(db as unknown as { transaction: (cb: (tx: SqliteTx) => void) => void }).transaction((tx) => {
       tx.delete(sessionEvents).where(eq(sessionEvents.sessionId, id)).run()
       tx.delete(sessionKategoris).where(eq(sessionKategoris.sessionId, id)).run()
       tx.delete(sharingSessions).where(eq(sharingSessions.id, id)).run()
