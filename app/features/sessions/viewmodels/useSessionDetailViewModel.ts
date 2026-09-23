@@ -1,12 +1,16 @@
+import { useSessionAnalytics } from '~~/app/features/sessions/composables/useSessionAnalytics'
 import type { SessionDetail } from '~~/shared/types/session'
 
 export async function useSessionDetailViewModel() {
   const route = useRoute()
+  const analytics = useSessionAnalytics()
+
   const slug = computed(() => {
     const raw = route.params.slug
     return Array.isArray(raw) ? raw[0] : (raw as string)
   })
 
+  // In Nuxt SSR, await useFetch guarantees payload is resolved before setting response status
   const { data, status, error, refresh } = await useFetch<SessionDetail>(
     () => `/api/sessions/${slug.value}`,
     {
@@ -19,7 +23,6 @@ export async function useSessionDetailViewModel() {
   const isError = computed(() => status.value === 'error')
   const isNotFound = computed(() => error.value?.statusCode === 404)
 
-  // Nuxt SSR response code alignment
   if (import.meta.server && error.value?.statusCode === 404) {
     const event = useRequestEvent()
     if (event) {
@@ -53,8 +56,39 @@ export async function useSessionDetailViewModel() {
     return `${day} ${monthName} ${year}`
   })
 
+  let isMounted = false
+  let trackedSessionId: number | null = null
+
+  function checkAndTrackPageView(targetSession: SessionDetail | null) {
+    if (!isMounted || !targetSession?.id) return
+    if (trackedSessionId === targetSession.id) return
+
+    trackedSessionId = targetSession.id
+    analytics.trackPageView(targetSession.id)
+  }
+
+  // Synchronous registration of lifecycle hooks inside setup context (Nuxt setup supports top-level await)
+  onMounted(() => {
+    isMounted = true
+    checkAndTrackPageView(session.value)
+  })
+
+  watch(
+    session,
+    (newVal) => {
+      checkAndTrackPageView(newVal)
+    },
+    { immediate: false }
+  )
+
+  onBeforeUnmount(() => {
+    isMounted = false
+  })
+
   function onVideoPlay() {
-    // Sprint 6 akan menghubungkan ini ke POST /api/events (video_play)
+    if (session.value?.id) {
+      analytics.trackVideoPlay(session.value.id)
+    }
   }
 
   return {
