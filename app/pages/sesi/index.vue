@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import UpcomingLumaSection from '~~/app/features/home/components/UpcomingLumaSection.vue'
 import SessionCard from '~~/app/features/sessions/components/SessionCard.vue'
 import { useSearchViewModel } from '~~/app/features/sessions/viewmodels/useSearchViewModel'
 import { useSessionArchiveViewModel } from '~~/app/features/sessions/viewmodels/useSessionArchiveViewModel'
-
 import { getCanonicalUrl } from '~~/shared/utils/seo'
 
 useHead(() => ({
@@ -53,12 +53,15 @@ const {
 
 <template>
   <div class="max-w-6xl mx-auto px-4 py-8 md:py-12">
-    <header class="mb-8 md:mb-12">
+    <header class="mb-8 md:mb-10">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">Arsip Sesi</h1>
       <p class="mt-2 text-base md:text-lg text-gray-600">
         Jelajahi rekaman sharing session dari komunitas kami.
       </p>
     </header>
+
+    <!-- Upcoming Event (Luma Embed / Empty State, PRD Bagian 5.1.D) -->
+    <UpcomingLumaSection />
 
     <!-- Search & Filter Bar (Sprint 4 Discovery) -->
     <div class="mb-10 space-y-4">

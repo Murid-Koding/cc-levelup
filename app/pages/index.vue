@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UpcomingLumaSection from '~~/app/features/home/components/UpcomingLumaSection.vue'
 import { getCanonicalUrl } from '~~/shared/utils/seo'
 
 useHead({
@@ -21,18 +22,33 @@ useHead({
 </script>
 
 <template>
-  <section class="max-w-6xl mx-auto px-4 py-16">
-    <h1 class="text-3xl font-bold text-gray-900">CC Level Up!</h1>
-    <p class="mt-4 text-gray-600">
-      Arsip sharing session komunitas kami. Sesi pertama dalam Bahasa Indonesia.
-    </p>
-    <div class="mt-8">
-      <NuxtLink
-        to="/sesi"
-        class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md text-sm font-medium"
-      >
-        Jelajahi Arsip Sesi &rarr;
-      </NuxtLink>
-    </div>
-  </section>
+  <div class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+    <!-- Hero Section -->
+    <header class="mb-12">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">
+        CC Level Up!
+      </h1>
+      <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-2xl leading-relaxed">
+        Arsip sharing session komunitas terbuka. Belajar bersama topik rekayasa perangkat lunak,
+        produk, dan teknologi dalam Bahasa Indonesia.
+      </p>
+      <div class="mt-6 flex flex-wrap items-center gap-4">
+        <NuxtLink
+          to="/sesi"
+          class="inline-flex items-center px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-sm transition-colors"
+        >
+          Jelajahi Semua Sesi &rarr;
+        </NuxtLink>
+        <NuxtLink
+          to="/tentang"
+          class="inline-flex items-center px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-medium transition-colors"
+        >
+          Tentang Komunitas
+        </NuxtLink>
+      </div>
+    </header>
+
+    <!-- Upcoming Event (Luma Embed / Empty State) -->
+    <UpcomingLumaSection />
+  </div>
 </template>

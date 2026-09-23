@@ -10,28 +10,34 @@ export type AppDatabase = DrizzleD1Database<typeof schema>
 
 let devSqliteDb: Database.Database | null = null
 
-function getLocalD1Database(): Database.Database {
+function getLocalDatabase(): Database.Database {
   if (devSqliteDb) return devSqliteDb
 
+  // 1. Prioritas: Cek file SQLite mandiri di .data/local.sqlite (bebas dari workerd / macOS compatibility issue)
+  const nodeDbPath = join(process.cwd(), '.data/local.sqlite')
+  if (existsSync(nodeDbPath)) {
+    devSqliteDb = new Database(nodeDbPath)
+    devSqliteDb.pragma('foreign_keys = ON')
+    return devSqliteDb
+  }
+
+  // 2. Fallback: Cek direktori D1 bawaan Wrangler jika ada
   const d1Dir = join(process.cwd(), '.wrangler/state/v3/d1/miniflare-D1DatabaseObject')
-  if (!existsSync(d1Dir)) {
-    throw new Error(
-      `Direktori D1 lokal belum ada di ${d1Dir}. Jalankan "pnpm db:migrate:local" terlebih dahulu.`
+  if (existsSync(d1Dir)) {
+    const files = readdirSync(d1Dir).filter(
+      (f) => f.endsWith('.sqlite') && !f.startsWith('metadata')
     )
+    if (files.length > 0) {
+      const dbPath = join(d1Dir, files[0]!)
+      devSqliteDb = new Database(dbPath)
+      devSqliteDb.pragma('foreign_keys = ON')
+      return devSqliteDb
+    }
   }
 
-  const files = readdirSync(d1Dir).filter((f) => f.endsWith('.sqlite') && !f.startsWith('metadata'))
-
-  if (files.length === 0) {
-    throw new Error(
-      `Database SQLite lokal tidak ditemukan di ${d1Dir}. Jalankan "pnpm db:migrate:local".`
-    )
-  }
-
-  const dbPath = join(d1Dir, files[0]!)
-  devSqliteDb = new Database(dbPath)
-  devSqliteDb.pragma('foreign_keys = ON')
-  return devSqliteDb
+  throw new Error(
+    `Database SQLite lokal belum siap. Silakan jalankan "pnpm db:migrate:local" terlebih dahulu.`
+  )
 }
 
 export function useDb(event: H3Event): AppDatabase {
@@ -43,9 +49,9 @@ export function useDb(event: H3Event): AppDatabase {
     return drizzleD1(binding, { schema })
   }
 
-  // 2. Development mode fallback: gunakan database D1 lokal yang dibuat oleh Wrangler
+  // 2. Development mode fallback: gunakan database SQLite lokal
   if (import.meta.dev) {
-    const localDb = getLocalD1Database()
+    const localDb = getLocalDatabase()
     return drizzleSqlite(localDb, { schema }) as unknown as AppDatabase
   }
 
