@@ -40,7 +40,9 @@ test.describe('public session archive', () => {
     await expect(prevButton).toBeVisible()
     await prevButton.click()
 
-    await expect(page).toHaveURL(url => !url.searchParams.has('page') || url.searchParams.get('page') === '1')
+    await expect(page).toHaveURL(
+      (url) => !url.searchParams.has('page') || url.searchParams.get('page') === '1'
+    )
     await expect(page.getByText(/Halaman 1 dari 2/)).toBeVisible()
   })
 

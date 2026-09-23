@@ -28,7 +28,7 @@ INSERT OR IGNORE INTO `sharing_sessions` (
     'Pengantar merancang API sederhana di Nuxt untuk kebutuhan komunitas.',
     'Sesi ini membahas struktur route server Nuxt, validasi input, dan cara menjaga handler tetap tipis.',
     'devVideo001',
-    'https://example.com/materi/membangun-api-dengan-nuxt',
+    'https://drive.google.com/drive/folders/membangun-api-dengan-nuxt-test',
     'published'
   ),
   (
@@ -52,7 +52,7 @@ INSERT OR IGNORE INTO `sharing_sessions` (
     'Cara menjaga produk komunitas tetap berguna tanpa tim besar.',
     'Membahas scope MVP, keputusan yang ditunda, dan operasional harian.',
     'devVideo003',
-    'https://example.com/materi/produk-komunitas-yang-bertahan',
+    'https://drive.google.com/drive/folders/produk-komunitas-yang-bertahan-test',
     'published'
   ),
   (

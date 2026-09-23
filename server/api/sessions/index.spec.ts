@@ -56,9 +56,8 @@ function createD1Mock(sqlite: Database.Database) {
         },
         async first(colName?: string) {
           const stmt = sqlite.prepare(query)
-          const row = (
-            boundParams.length > 0 ? stmt.get(...boundParams) : stmt.get()
-          ) as Record<string, unknown> | undefined
+          const row = (boundParams.length > 0 ? stmt.get(...boundParams) : stmt.get()) as
+            Record<string, unknown> | undefined
           if (!row) return null
           return colName ? row[colName] : row
         },

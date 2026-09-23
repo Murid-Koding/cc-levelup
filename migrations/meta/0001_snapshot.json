@@ -32,9 +32,7 @@
       "indexes": {
         "kategoris_slug_idx": {
           "name": "kategoris_slug_idx",
-          "columns": [
-            "slug"
-          ],
+          "columns": ["slug"],
           "isUnique": true
         }
       },
@@ -78,9 +76,7 @@
       "indexes": {
         "pembicaras_slug_idx": {
           "name": "pembicaras_slug_idx",
-          "columns": [
-            "slug"
-          ],
+          "columns": ["slug"],
           "isUnique": true
         }
       },
@@ -132,9 +128,7 @@
       "indexes": {
         "session_events_session_id_idx": {
           "name": "session_events_session_id_idx",
-          "columns": [
-            "session_id"
-          ],
+          "columns": ["session_id"],
           "isUnique": false
         }
       },
@@ -143,12 +137,8 @@
           "name": "session_events_session_id_sharing_sessions_id_fk",
           "tableFrom": "session_events",
           "tableTo": "sharing_sessions",
-          "columnsFrom": [
-            "session_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["session_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -178,24 +168,17 @@
       "indexes": {
         "session_kategoris_session_id_kategori_id_idx": {
           "name": "session_kategoris_session_id_kategori_id_idx",
-          "columns": [
-            "session_id",
-            "kategori_id"
-          ],
+          "columns": ["session_id", "kategori_id"],
           "isUnique": true
         },
         "session_kategoris_session_id_idx": {
           "name": "session_kategoris_session_id_idx",
-          "columns": [
-            "session_id"
-          ],
+          "columns": ["session_id"],
           "isUnique": false
         },
         "session_kategoris_kategori_id_idx": {
           "name": "session_kategoris_kategori_id_idx",
-          "columns": [
-            "kategori_id"
-          ],
+          "columns": ["kategori_id"],
           "isUnique": false
         }
       },
@@ -204,12 +187,8 @@
           "name": "session_kategoris_session_id_sharing_sessions_id_fk",
           "tableFrom": "session_kategoris",
           "tableTo": "sharing_sessions",
-          "columnsFrom": [
-            "session_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["session_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -217,12 +196,8 @@
           "name": "session_kategoris_kategori_id_kategoris_id_fk",
           "tableFrom": "session_kategoris",
           "tableTo": "kategoris",
-          "columnsFrom": [
-            "kategori_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["kategori_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -349,17 +324,12 @@
       "indexes": {
         "sharing_sessions_slug_idx": {
           "name": "sharing_sessions_slug_idx",
-          "columns": [
-            "slug"
-          ],
+          "columns": ["slug"],
           "isUnique": true
         },
         "sharing_sessions_status_tanggal_idx": {
           "name": "sharing_sessions_status_tanggal_idx",
-          "columns": [
-            "status",
-            "tanggal"
-          ],
+          "columns": ["status", "tanggal"],
           "isUnique": false
         }
       },
@@ -368,12 +338,8 @@
           "name": "sharing_sessions_pembicara_id_pembicaras_id_fk",
           "tableFrom": "sharing_sessions",
           "tableTo": "pembicaras",
-          "columnsFrom": [
-            "pembicara_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["pembicara_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
