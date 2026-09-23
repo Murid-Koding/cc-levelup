@@ -91,38 +91,33 @@ export async function verifyJwtSignature(token: string, publicKeyPem: string): P
 export async function validateAssertionToken(
   assertion: string | null | undefined,
   options: {
-    expectedAud?: string
+    expectedAud: string
     expectedIss?: string
-    publicKeyPem?: string
+    publicKeyPem: string
   }
 ): Promise<JwtPayload> {
   if (!assertion || typeof assertion !== 'string' || !assertion.trim()) {
     throw new Error('Unauthorized: Cloudflare Access assertion required')
   }
 
-  let payload: JwtPayload
-
-  if (options.publicKeyPem) {
-    payload = await verifyJwtSignature(assertion, options.publicKeyPem)
-  } else {
-    // If public key is not configured, parse payload and check claims
-    const parsed = parseJwt(assertion)
-    if (!parsed || parsed.header.alg === 'none') {
-      throw new Error('Unauthorized: Invalid Cloudflare Access assertion token')
-    }
-    payload = parsed.payload
+  if (!options.publicKeyPem || !options.publicKeyPem.trim()) {
+    throw new Error('Unauthorized: Server verification key is not configured')
   }
+
+  if (!options.expectedAud || !options.expectedAud.trim()) {
+    throw new Error('Unauthorized: Server audience verification is not configured')
+  }
+
+  const payload = await verifyJwtSignature(assertion, options.publicKeyPem)
 
   const nowSeconds = Math.floor(Date.now() / 1000)
   if (typeof payload.exp !== 'number' || payload.exp <= nowSeconds) {
     throw new Error('Unauthorized: Cloudflare Access assertion has expired')
   }
 
-  if (options.expectedAud) {
-    const audArray = Array.isArray(payload.aud) ? payload.aud : [payload.aud]
-    if (!audArray.includes(options.expectedAud)) {
-      throw new Error('Forbidden: Invalid Cloudflare Access audience claim')
-    }
+  const audArray = Array.isArray(payload.aud) ? payload.aud : [payload.aud]
+  if (!audArray.includes(options.expectedAud)) {
+    throw new Error('Forbidden: Invalid Cloudflare Access audience claim')
   }
 
   if (options.expectedIss && payload.iss !== options.expectedIss) {

@@ -1,6 +1,6 @@
 import { generateKeyPairSync, sign } from 'node:crypto'
 import { describe, expect, it } from 'vitest'
-import { parseJwt, validateAssertionToken, verifyJwtSignature } from './jwt'
+import { parseJwt, validateAssertionToken } from './jwt'
 
 const { publicKey, privateKey } = generateKeyPairSync('rsa', {
   modulusLength: 2048,
@@ -20,7 +20,7 @@ function createSignedJwt(
   return `${signingInput}.${signature}`
 }
 
-describe('jwt utils with signature verification', () => {
+describe('jwt utils with strict signature verification', () => {
   it('parses valid JWT correctly', () => {
     const token = createSignedJwt({ sub: 'user-1', email: 'admin@example.com' })
     const parsed = parseJwt(token)
@@ -28,35 +28,59 @@ describe('jwt utils with signature verification', () => {
     expect(parsed?.header.alg).toBe('RS256')
   })
 
+  it('fails closed when public key or audience is missing in options', async () => {
+    const token = createSignedJwt({
+      sub: 'admin',
+      aud: 'test',
+      exp: Math.floor(Date.now() / 1000) + 3600
+    })
+    await expect(
+      validateAssertionToken(token, { expectedAud: '', publicKeyPem: '' })
+    ).rejects.toThrow('Unauthorized: Server verification key is not configured')
+
+    await expect(
+      validateAssertionToken(token, { expectedAud: '', publicKeyPem: publicKey })
+    ).rejects.toThrow('Unauthorized: Server audience verification is not configured')
+  })
+
   it('rejects alg none tokens', async () => {
     const unsignedToken = `eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.${Buffer.from(JSON.stringify({ sub: 'admin' })).toString('base64url')}.`
-    await expect(validateAssertionToken(unsignedToken, {})).rejects.toThrow(
-      'Unauthorized: Invalid Cloudflare Access assertion token'
-    )
+    await expect(
+      validateAssertionToken(unsignedToken, { expectedAud: 'aud-valid', publicKeyPem: publicKey })
+    ).rejects.toThrow('Unauthorized')
   })
 
   it('verifies signature against public key successfully', async () => {
     const token = createSignedJwt({
       sub: 'admin-user',
+      aud: 'aud-valid',
       exp: Math.floor(Date.now() / 1000) + 3600
     })
-    const payload = await verifyJwtSignature(token, publicKey)
+    const payload = await validateAssertionToken(token, {
+      expectedAud: 'aud-valid',
+      publicKeyPem: publicKey
+    })
     expect(payload.sub).toBe('admin-user')
   })
 
   it('rejects tampered token signature', async () => {
     const token = createSignedJwt({
       sub: 'admin-user',
+      aud: 'aud-valid',
       exp: Math.floor(Date.now() / 1000) + 3600
     })
-    // Tamper payload
     const parts = token.split('.')
-    const tamperedPayload = Buffer.from(JSON.stringify({ sub: 'hacker' })).toString('base64url')
+    const tamperedPayload = Buffer.from(
+      JSON.stringify({ sub: 'hacker', aud: 'aud-valid' })
+    ).toString('base64url')
     const tamperedToken = `${parts[0]}.${tamperedPayload}.${parts[2]}`
 
-    await expect(verifyJwtSignature(tamperedToken, publicKey)).rejects.toThrow(
-      'Unauthorized: Cloudflare Access signature verification failed'
-    )
+    await expect(
+      validateAssertionToken(tamperedToken, {
+        expectedAud: 'aud-valid',
+        publicKeyPem: publicKey
+      })
+    ).rejects.toThrow('Unauthorized: Cloudflare Access signature verification failed')
   })
 
   it('validates audience and issuer claims', async () => {
@@ -84,6 +108,7 @@ describe('jwt utils with signature verification', () => {
 
     await expect(
       validateAssertionToken(validToken, {
+        expectedAud: 'aud-valid',
         expectedIss: 'wrong-issuer',
         publicKeyPem: publicKey
       })
@@ -93,11 +118,13 @@ describe('jwt utils with signature verification', () => {
   it('rejects expired token', async () => {
     const expiredToken = createSignedJwt({
       sub: 'admin',
+      aud: 'aud-valid',
       exp: Math.floor(Date.now() / 1000) - 10
     })
 
     await expect(
       validateAssertionToken(expiredToken, {
+        expectedAud: 'aud-valid',
         publicKeyPem: publicKey
       })
     ).rejects.toThrow('Unauthorized: Cloudflare Access assertion has expired')

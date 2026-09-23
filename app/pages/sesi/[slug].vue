@@ -2,9 +2,10 @@
 import SessionCard from '~~/app/features/sessions/components/SessionCard.vue'
 import YouTubeFacade from '~~/app/features/sessions/components/YouTubeFacade.vue'
 import { useSessionDetailViewModel } from '~~/app/features/sessions/viewmodels/useSessionDetailViewModel'
+import { getCanonicalUrl } from '~~/shared/utils/seo'
 
 const { session, formattedDate, isLoading, isError, isNotFound, refresh, onVideoPlay } =
-  await useSessionDetailViewModel()
+  useSessionDetailViewModel()
 
 // SEO & Structured Data (VideoObject)
 useHead(() => {
@@ -18,6 +19,7 @@ useHead(() => {
   const thumbnailUrl = `https://img.youtube.com/vi/${session.value.youtubeVideoId}/hqdefault.jpg`
   const currentTitle = `${session.value.judul} — CC Level Up!`
   const description = session.value.deskripsi
+  const canonicalUrl = getCanonicalUrl(`/sesi/${session.value.slug}`)
 
   // Escape HTML characters in JSON-LD string to prevent XSS breakout
   const safeJsonLd = JSON.stringify({
@@ -32,12 +34,18 @@ useHead(() => {
 
   return {
     title: currentTitle,
+    link: [{ rel: 'canonical', href: canonicalUrl }],
     meta: [
       { name: 'description', content: description },
       { property: 'og:title', content: currentTitle },
       { property: 'og:description', content: description },
       { property: 'og:type', content: 'video.other' },
-      { property: 'og:image', content: thumbnailUrl }
+      { property: 'og:url', content: canonicalUrl },
+      { property: 'og:image', content: thumbnailUrl },
+      { name: 'twitter:card', content: 'summary_large_image' },
+      { name: 'twitter:title', content: currentTitle },
+      { name: 'twitter:description', content: description },
+      { name: 'twitter:image', content: thumbnailUrl }
     ],
     script: [
       {

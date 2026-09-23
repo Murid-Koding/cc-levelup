@@ -1,7 +1,7 @@
 import { useSessionAnalytics } from '~~/app/features/sessions/composables/useSessionAnalytics'
 import type { SessionDetail } from '~~/shared/types/session'
 
-export async function useSessionDetailViewModel() {
+export function useSessionDetailViewModel() {
   const route = useRoute()
   const analytics = useSessionAnalytics()
 
@@ -10,8 +10,30 @@ export async function useSessionDetailViewModel() {
     return Array.isArray(raw) ? raw[0] : (raw as string)
   })
 
-  // In Nuxt SSR, await useFetch guarantees payload is resolved before setting response status
-  const { data, status, error, refresh } = await useFetch<SessionDetail>(
+  // Synchronous lifecycle hooks registration
+  let isMounted = false
+  let trackedSessionId: number | null = null
+
+  function checkAndTrackPageView(targetSession: SessionDetail | null) {
+    if (!isMounted || !targetSession?.id) return
+    if (trackedSessionId === targetSession.id) return
+
+    trackedSessionId = targetSession.id
+    analytics.trackPageView(targetSession.id)
+  }
+
+  onMounted(() => {
+    isMounted = true
+    if (session.value) {
+      checkAndTrackPageView(session.value)
+    }
+  })
+
+  onBeforeUnmount(() => {
+    isMounted = false
+  })
+
+  const { data, status, error, refresh } = useFetch<SessionDetail>(
     () => `/api/sessions/${slug.value}`,
     {
       watch: [slug]
@@ -23,11 +45,25 @@ export async function useSessionDetailViewModel() {
   const isError = computed(() => status.value === 'error')
   const isNotFound = computed(() => error.value?.statusCode === 404)
 
-  if (import.meta.server && error.value?.statusCode === 404) {
+  watch(
+    session,
+    (newVal) => {
+      checkAndTrackPageView(newVal)
+    },
+    { immediate: false }
+  )
+
+  if (import.meta.server) {
     const event = useRequestEvent()
-    if (event) {
-      setResponseStatus(event, 404)
-    }
+    watch(
+      error,
+      (err) => {
+        if (err?.statusCode === 404 && event) {
+          setResponseStatus(event, 404)
+        }
+      },
+      { immediate: true, flush: 'sync' }
+    )
   }
 
   const MONTH_NAMES = [
@@ -54,35 +90,6 @@ export async function useSessionDetailViewModel() {
     const day = String(Number(parts[2]))
     const monthName = MONTH_NAMES[monthIdx] || parts[1]
     return `${day} ${monthName} ${year}`
-  })
-
-  let isMounted = false
-  let trackedSessionId: number | null = null
-
-  function checkAndTrackPageView(targetSession: SessionDetail | null) {
-    if (!isMounted || !targetSession?.id) return
-    if (trackedSessionId === targetSession.id) return
-
-    trackedSessionId = targetSession.id
-    analytics.trackPageView(targetSession.id)
-  }
-
-  // Synchronous registration of lifecycle hooks inside setup context (Nuxt setup supports top-level await)
-  onMounted(() => {
-    isMounted = true
-    checkAndTrackPageView(session.value)
-  })
-
-  watch(
-    session,
-    (newVal) => {
-      checkAndTrackPageView(newVal)
-    },
-    { immediate: false }
-  )
-
-  onBeforeUnmount(() => {
-    isMounted = false
   })
 
   function onVideoPlay() {

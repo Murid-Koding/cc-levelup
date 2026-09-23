@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
+const baseURL = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000'
+const useExternalServer = Boolean(process.env.PLAYWRIGHT_BASE_URL)
+
 export default defineConfig({
   testDir: 'tests/e2e',
   fullyParallel: false,
@@ -8,7 +11,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: 'list',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL,
     trace: 'on-first-retry',
     ignoreHTTPSErrors: true
   },
@@ -18,12 +21,16 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] }
     }
   ],
-  webServer: {
-    command: 'pnpm dev --port 3000',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000,
-    stdout: 'pipe',
-    stderr: 'pipe'
-  }
+  ...(useExternalServer
+    ? {}
+    : {
+        webServer: {
+          command: 'pnpm dev --port 3000',
+          url: 'http://localhost:3000',
+          reuseExistingServer: !process.env.CI,
+          timeout: 120000,
+          stdout: 'pipe',
+          stderr: 'pipe'
+        }
+      })
 })

@@ -3,16 +3,21 @@ import SessionCard from '~~/app/features/sessions/components/SessionCard.vue'
 import { useSearchViewModel } from '~~/app/features/sessions/viewmodels/useSearchViewModel'
 import { useSessionArchiveViewModel } from '~~/app/features/sessions/viewmodels/useSessionArchiveViewModel'
 
-useHead({
+import { getCanonicalUrl } from '~~/shared/utils/seo'
+
+useHead(() => ({
   title: 'Arsip Sharing Session — CC Level Up!',
+  link: [{ rel: 'canonical', href: getCanonicalUrl('/sesi') }],
   meta: [
     {
       name: 'description',
       content:
         'Kumpulan sharing session komunitas CC Level Up! seputar teknologi, bisnis, desain, dan pengembangan diri.'
-    }
+    },
+    { property: 'og:title', content: 'Arsip Sharing Session — CC Level Up!' },
+    { property: 'og:url', content: getCanonicalUrl('/sesi') }
   ]
-})
+}))
 
 const {
   sessions,

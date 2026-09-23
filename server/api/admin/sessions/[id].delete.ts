@@ -42,24 +42,23 @@ export default defineEventHandler(async (event) => {
       deleteSessionStmt
     ])
   } else if (
-    typeof (db as { transaction?: (cb: (tx: unknown) => Promise<unknown>) => Promise<unknown> })
-      .transaction === 'function'
+    typeof (db as { transaction?: (cb: (tx: unknown) => unknown) => unknown }).transaction ===
+    'function'
   ) {
-    // 2. SQLite local fallback using native transaction
+    // 2. SQLite local fallback using synchronous transaction (better-sqlite3)
     interface SqliteTx {
-      delete: (table: unknown) => { where: (condition: unknown) => Promise<unknown> }
+      delete: (table: unknown) => { where: (condition: unknown) => { run: () => void } }
     }
-    await (
-      db as { transaction: (cb: (tx: SqliteTx) => Promise<unknown>) => Promise<unknown> }
-    ).transaction(async (tx) => {
-      await tx.delete(sessionEvents).where(eq(sessionEvents.sessionId, id))
-      await tx.delete(sessionKategoris).where(eq(sessionKategoris.sessionId, id))
-      await tx.delete(sharingSessions).where(eq(sharingSessions.id, id))
+    ;(db as { transaction: (cb: (tx: SqliteTx) => void) => void }).transaction((tx) => {
+      tx.delete(sessionEvents).where(eq(sessionEvents.sessionId, id)).run()
+      tx.delete(sessionKategoris).where(eq(sessionKategoris.sessionId, id)).run()
+      tx.delete(sharingSessions).where(eq(sharingSessions.id, id)).run()
     })
   } else {
-    await db.delete(sessionEvents).where(eq(sessionEvents.sessionId, id))
-    await db.delete(sessionKategoris).where(eq(sessionKategoris.sessionId, id))
-    await db.delete(sharingSessions).where(eq(sharingSessions.id, id))
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Atomic transaction support is required'
+    })
   }
 
   return { success: true }

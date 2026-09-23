@@ -102,7 +102,10 @@ export default defineEventHandler(async (event): Promise<SessionDetail> => {
 
     if (targetSessionIds.length > 0) {
       const relatedItems = await db.query.sharingSessions.findMany({
-        where: inArray(sharingSessions.id, targetSessionIds),
+        where: and(
+          inArray(sharingSessions.id, targetSessionIds),
+          eq(sharingSessions.status, 'published')
+        ),
         orderBy: [desc(sharingSessions.tanggal), desc(sharingSessions.id)],
         columns: {
           id: true,

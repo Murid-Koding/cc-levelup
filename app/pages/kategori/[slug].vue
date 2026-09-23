@@ -80,13 +80,16 @@ useHead(() => {
 
   const title = `Sesi Kategori ${kategori.value.nama} — CC Level Up!`
   const desc = `Kumpulan sharing session komunitas CC Level Up! dalam topik ${kategori.value.nama}.`
+  const canonicalUrl = `https://cclevelup.web.id/kategori/${kategori.value.slug}`
 
   return {
     title,
+    link: [{ rel: 'canonical', href: canonicalUrl }],
     meta: [
       { name: 'description', content: desc },
       { property: 'og:title', content: title },
-      { property: 'og:description', content: desc }
+      { property: 'og:description', content: desc },
+      { property: 'og:url', content: canonicalUrl }
     ]
   }
 })

@@ -10,11 +10,16 @@ dist
 .wrangler
 wrangler.toml
 .vscode/.dev.urls.json
+.dev.vars
+.dev.vars.*
 
 # Local env
 .env
 .env.*
 !.env.example
+
+# Backups
+backups/
 
 # Tests
 coverage
@@ -24,3 +29,7 @@ playwright-report
 # Misc
 .DS_Store
 *.log
+
+# AI
+docs/
+AGENTS.md

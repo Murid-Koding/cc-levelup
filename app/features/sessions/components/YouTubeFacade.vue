@@ -84,7 +84,8 @@ async function startPlayback() {
         :src="thumbnailUrl"
         :alt="`Thumbnail video: ${title}`"
         class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
-        loading="lazy"
+        loading="eager"
+        fetchpriority="high"
         @error="onImageError"
       />
       <div
