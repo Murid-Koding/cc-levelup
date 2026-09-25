@@ -2,13 +2,15 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cc-levelup",
   "compatibility_date": "2026-01-01",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "main": ".output/server/index.mjs",
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "cc-levelup-db",
-      "database_id": "00000000000000000000000000000000",
+      "database_id": "d514cfe6-769c-42ae-983f-93670b3d8eb6",
       "migrations_dir": "migrations"
     }
   ]
