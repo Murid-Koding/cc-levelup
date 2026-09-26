@@ -7,7 +7,7 @@ test.describe('Launch Critical Paths', () => {
     await expect(page.getByRole('heading', { level: 1, name: /CC Level Up!/ })).toBeVisible()
 
     // 2. Navigation to archive
-    await page.getByRole('link', { name: /Jelajahi Arsip Sesi/ }).click()
+    await page.getByRole('link', { name: /^Sesi$/ }).click()
     await expect(page).toHaveURL(/\/sesi$/)
     await expect(page.getByRole('heading', { level: 1, name: 'Arsip Sesi' })).toBeVisible()
 
