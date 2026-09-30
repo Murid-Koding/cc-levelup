@@ -7,7 +7,7 @@ import { getCanonicalUrl } from '~~/shared/utils/seo'
 
 useHead(() => ({
   title: 'Arsip Sharing Session — CC Level Up!',
-  link: [{ rel: 'canonical', href: getCanonicalUrl('/sesi') }],
+  link: [{ rel: 'canonical', href: getCanonicalUrl('/sessions') }],
   meta: [
     {
       name: 'description',
@@ -15,7 +15,7 @@ useHead(() => ({
         'Kumpulan sharing session komunitas CC Level Up! seputar teknologi, bisnis, desain, dan pengembangan diri.'
     },
     { property: 'og:title', content: 'Arsip Sharing Session — CC Level Up!' },
-    { property: 'og:url', content: getCanonicalUrl('/sesi') }
+    { property: 'og:url', content: getCanonicalUrl('/sessions') }
   ]
 }))
 
@@ -167,7 +167,7 @@ const {
         <!-- Link ke Halaman Kategori Mandiri jika kategori terpilih -->
         <NuxtLink
           v-if="selectedCategory"
-          :to="`/kategori/${selectedCategory}`"
+          :to="`/categories/${selectedCategory}`"
           class="text-xs font-medium text-emerald-700 hover:text-emerald-800 hover:underline inline-flex items-center gap-1"
         >
           Buka Halaman Topik Ini
@@ -299,7 +299,7 @@ const {
           {{ pagination.totalPages }}.
         </p>
         <NuxtLink
-          to="/sesi"
+          to="/sessions"
           class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
         >
           Kembali ke Halaman Pertama

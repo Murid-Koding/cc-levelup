@@ -80,7 +80,7 @@ useHead(() => {
 
   const title = `Sesi Kategori ${kategori.value.nama} — CC Level Up!`
   const desc = `Kumpulan sharing session komunitas CC Level Up! dalam topik ${kategori.value.nama}.`
-  const canonicalUrl = `https://cclevelup.web.id/kategori/${kategori.value.slug}`
+  const canonicalUrl = `https://cclevelup.web.id/categories/${kategori.value.slug}`
 
   return {
     title,
@@ -100,7 +100,7 @@ useHead(() => {
     <!-- Breadcrumb -->
     <nav class="mb-6" aria-label="Navigasi Rekam Jejak">
       <NuxtLink
-        to="/sesi"
+        to="/sessions"
         class="inline-flex items-center text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded"
       >
         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,7 +124,7 @@ useHead(() => {
       <h1 class="text-2xl font-bold text-amber-900">Kategori Tidak Ditemukan</h1>
       <p class="mt-2 text-sm text-amber-700">Topik kategori yang Anda tuju tidak tersedia.</p>
       <NuxtLink
-        to="/sesi"
+        to="/sessions"
         class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
       >
         Lihat Semua Sesi
@@ -191,7 +191,7 @@ useHead(() => {
         <h2 class="text-lg font-semibold text-gray-800">Belum ada sesi untuk kategori ini</h2>
         <p class="mt-2 text-sm text-gray-500">Sesi dengan topik ini akan segera hadir.</p>
         <NuxtLink
-          to="/sesi"
+          to="/sessions"
           class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500"
         >
           Lihat Kategori Lain

@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@nuxtjs/i18n": "^9.0.0",
+    "@primeicons/vue": "^8.0.2",
     "@primevue/core": "^4.3.1",
     "@primevue/forms": "^4.3.1",
     "@primevue/nuxt-module": "^4.3.1",

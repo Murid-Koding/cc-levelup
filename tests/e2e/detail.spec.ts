@@ -4,7 +4,7 @@ test.describe('public session detail page', () => {
   test('displays session details, speaker info, and Google Drive material link', async ({
     page
   }) => {
-    const res = await page.goto('/sesi/membangun-api-dengan-nuxt', { waitUntil: 'networkidle' })
+    const res = await page.goto('/sessions/membangun-api-dengan-nuxt', { waitUntil: 'networkidle' })
     expect(res?.status()).toBe(200)
 
     // Validasi Judul Sesi
@@ -36,7 +36,7 @@ test.describe('public session detail page', () => {
   test('loads YouTube iframe only after user clicks or activates facade via keyboard', async ({
     page
   }) => {
-    await page.goto('/sesi/membangun-api-dengan-nuxt', { waitUntil: 'networkidle' })
+    await page.goto('/sessions/membangun-api-dengan-nuxt', { waitUntil: 'networkidle' })
 
     // Awalnya iframe YouTube TIDAK boleh ada di DOM
     await expect(page.locator('iframe[title*="Video player"]')).not.toBeAttached()
@@ -55,7 +55,7 @@ test.describe('public session detail page', () => {
   })
 
   test('displays related sessions with the same category', async ({ page }) => {
-    await page.goto('/sesi/membangun-api-dengan-nuxt', { waitUntil: 'networkidle' })
+    await page.goto('/sessions/membangun-api-dengan-nuxt', { waitUntil: 'networkidle' })
 
     await expect(page.getByRole('heading', { level: 2, name: 'Sesi Terkait' })).toBeVisible()
 
@@ -67,7 +67,7 @@ test.describe('public session detail page', () => {
   test('returns HTTP 404 response status and prevents access to draft sessions', async ({
     page
   }) => {
-    const res = await page.goto('/sesi/draft-sesi-belum-tayang', { waitUntil: 'networkidle' })
+    const res = await page.goto('/sessions/draft-sesi-belum-tayang', { waitUntil: 'networkidle' })
 
     // Harus berstatus HTTP 404 (bukan soft 404 status 200)
     expect(res?.status()).toBe(404)
@@ -86,11 +86,11 @@ test.describe('public session detail page', () => {
     await expect(backLink).toBeVisible()
     await backLink.click()
 
-    await expect(page).toHaveURL(/\/sesi$/)
+    await expect(page).toHaveURL(/\/sessions$/)
   })
 
   test('returns HTTP 404 response status for non-existent session slug', async ({ page }) => {
-    const res = await page.goto('/sesi/sesi-yang-tidak-pernah-ada', { waitUntil: 'networkidle' })
+    const res = await page.goto('/sessions/sesi-yang-tidak-pernah-ada', { waitUntil: 'networkidle' })
     expect(res?.status()).toBe(404)
     await expect(
       page.getByRole('heading', { level: 1, name: 'Sesi Tidak Ditemukan' })

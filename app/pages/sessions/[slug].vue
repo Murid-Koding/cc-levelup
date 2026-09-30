@@ -19,7 +19,7 @@ useHead(() => {
   const thumbnailUrl = `https://img.youtube.com/vi/${session.value.youtubeVideoId}/hqdefault.jpg`
   const currentTitle = `${session.value.judul} — CC Level Up!`
   const description = session.value.deskripsi
-  const canonicalUrl = getCanonicalUrl(`/sesi/${session.value.slug}`)
+  const canonicalUrl = getCanonicalUrl(`/sessions/${session.value.slug}`)
 
   // Escape HTML characters in JSON-LD string to prevent XSS breakout
   const safeJsonLd = JSON.stringify({
@@ -62,7 +62,7 @@ useHead(() => {
     <!-- Breadcrumb / Back to archive navigation -->
     <nav class="mb-6" aria-label="Navigasi Rekam Jejak">
       <NuxtLink
-        to="/sesi"
+        to="/sessions"
         class="inline-flex items-center text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded"
       >
         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,7 +98,7 @@ useHead(() => {
         Sesi yang Anda tuju mungkin belum dipublikasikan atau tautan yang Anda buka keliru.
       </p>
       <NuxtLink
-        to="/sesi"
+        to="/sessions"
         class="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500"
       >
         Lihat Semua Sesi Tersedia

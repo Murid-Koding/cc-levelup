@@ -3,7 +3,7 @@ import { getCanonicalUrl } from '~~/shared/utils/seo'
 
 useHead({
   title: 'Tentang Komunitas — CC Level Up!',
-  link: [{ rel: 'canonical', href: getCanonicalUrl('/tentang') }],
+  link: [{ rel: 'canonical', href: getCanonicalUrl('/about') }],
   meta: [
     {
       name: 'description',
@@ -16,7 +16,7 @@ useHead({
       content:
         'Inisiatif berbagi pengetahuan berkala komunitas untuk saling mendukung dan belajar bersama.'
     },
-    { property: 'og:url', content: getCanonicalUrl('/tentang') }
+    { property: 'og:url', content: getCanonicalUrl('/about') }
   ]
 })
 </script>
