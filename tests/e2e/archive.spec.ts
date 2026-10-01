@@ -17,7 +17,7 @@ test.describe('public session archive', () => {
   test('navigates from header to archive', async ({ page }) => {
     await page.goto('/')
     await page.evaluate(() => window.scrollTo(0, 100))
-    await page.getByRole('link', { name: 'Sesi' }).click()
+    await page.getByRole('link', { name: 'Sesi', exact: true }).click()
     await expect(page).toHaveURL(/\/sessions/)
     await expect(page.getByRole('heading', { level: 1, name: 'Sesi Belajar' })).toBeVisible()
   })
