@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import ArrowDown from '@primeicons/vue/arrow-down'
-import ArrowRight from '@primeicons/vue/arrow-right'
+import AngleDoubleDown from '@primeicons/vue/angle-double-down'
+import ArrowCircleRight from '@primeicons/vue/arrow-circle-right'
+import ArrowUp from '@primeicons/vue/arrow-up';
+import ScrollTop from 'primevue/scrolltop';
 import Sparkles from '@primeicons/vue/sparkles'
 import vAnimateonscroll from 'primevue/animateonscroll'
 import UpcomingLumaSection from '~~/app/features/home/components/UpcomingLumaSection.vue'
 import { getCanonicalUrl } from '~~/shared/utils/seo'
 
 useHead({
-  title: 'CC Level Up! — Platform dan komunitas berbagi gagasan untuk membantu Anda naik level bersama',
+  title:
+    'CC Level Up! — Platform dan komunitas berbagi gagasan untuk membantu Anda naik level bersama',
   link: [{ rel: 'canonical', href: getCanonicalUrl('/') }],
   meta: [
     {
@@ -55,27 +58,28 @@ useHead({
           }"
           class="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl leading-relaxed"
         >
-        Platform dan Komunitas berbagi gagasan untuk membantu Anda naik Level bersama lewat sharing session interaktif.
+          Komunitas belajar dan berbagi gagasan untuk membantu Anda naik Level bersama lewat sharing
+          session interaktif.
         </p>
         <div
           v-animateonscroll="{
             enterClass: 'animate-fadeinup animate-delay-300',
             threshold: 0.1
           }"
-          class="mt-8 flex flex-w items-center justify-center gap-4"
+          class="mt-8 flex flex-col items-center justify-center gap-4"
         >
           <NuxtLink
             to="/sessions"
-            class="no-underline inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-base font-semibold shadow-sm transition-colors"
+            class="no-underline inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full text-base font-semibold shadow-sm transition-colors"
           >
             <span>Jelajahi Semua Sesi</span>
-            <ArrowRight class="w-4 h-4" />
           </NuxtLink>
           <NuxtLink
             to="/about"
-            class="no-underline inline-flex items-center px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 rounded-xl text-base font-medium shadow-sm transition-colors"
+            class="no-underline inline-flex items-center text-gray-500 hover:text-black text-sm font-medium mt-2 transition-colors"
           >
-            Tentang Komunitas
+            <span class="mr-1"> Tentang Komunitas </span>
+            <ArrowCircleRight class="w-4 h-4" />
           </NuxtLink>
         </div>
       </div>
@@ -85,7 +89,7 @@ useHead({
         class="absolute bottom-8 inset-x-0 flex flex-col items-center justify-center text-xs text-gray-400 font-medium pointer-events-none select-none"
       >
         <span>Gulir ke bawah</span>
-        <ArrowDown class="w-4 h-4 mt-1 animate-bounce" />
+        <AngleDoubleDown class="w-4 h-4 mt-1 animate-bounce" />
       </div>
     </section>
 
@@ -99,5 +103,14 @@ useHead({
     >
       <UpcomingLumaSection />
     </div>
+
+    <ScrollTop
+      target="parent"
+      :threshold="100"
+    >
+      <template #icon>
+        <ArrowUp />
+      </template>
+    </ScrollTop>
   </div>
 </template>

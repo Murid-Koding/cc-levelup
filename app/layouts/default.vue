@@ -76,7 +76,7 @@ onUnmounted(() => {
 
     <footer class="border-t border-gray-200">
       <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-gray-500">
-        &copy; {{ new Date().getFullYear() }} CC Level Up! &mdash; Komunitas sharing session.
+        &copy; {{ new Date().getFullYear() }} CC Level Up! &mdash; Komunitas belajar dan berbagi wawasan.
       </div>
     </footer>
   </div>

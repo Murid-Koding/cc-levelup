@@ -47,7 +47,7 @@ function handleError() {
           class="inline-flex items-center px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
           @click.prevent="handleError"
         >
-          &larr; Kembali ke Arsip Sesi
+          &larr; Kembali ke Sesi Belajar
         </NuxtLink>
       </div>
     </div>

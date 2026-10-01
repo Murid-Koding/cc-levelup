@@ -10,7 +10,7 @@ test.describe('Launch Critical Paths', () => {
     await page.evaluate(() => window.scrollTo(0, 100))
     await page.getByRole('link', { name: /^Sesi$/ }).click()
     await expect(page).toHaveURL(/\/sessions$/)
-    await expect(page.getByRole('heading', { level: 1, name: 'Arsip Sesi' })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 1, name: 'Sesi Belajar' })).toBeVisible()
 
     // 3. Navigation to about page
     await page.getByRole('link', { name: 'Tentang' }).click()

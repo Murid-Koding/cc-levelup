@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import Search from '@primeicons/vue/search'
+import Times from '@primeicons/vue/times'
+import Button from 'primevue/button'
+import IconField from 'primevue/iconfield'
+import InputIcon from 'primevue/inputicon'
+import InputText from 'primevue/inputtext'
+import Paginator from 'primevue/paginator'
 import UpcomingLumaSection from '~~/app/features/home/components/UpcomingLumaSection.vue'
 import SessionCard from '~~/app/features/sessions/components/SessionCard.vue'
 import { useSearchViewModel } from '~~/app/features/sessions/viewmodels/useSearchViewModel'
@@ -6,7 +13,7 @@ import { useSessionArchiveViewModel } from '~~/app/features/sessions/viewmodels/
 import { getCanonicalUrl } from '~~/shared/utils/seo'
 
 useHead(() => ({
-  title: 'Arsip Sharing Session — CC Level Up!',
+  title: 'Sesi Belajar — CC Level Up!',
   link: [{ rel: 'canonical', href: getCanonicalUrl('/sessions') }],
   meta: [
     {
@@ -14,7 +21,7 @@ useHead(() => ({
       content:
         'Kumpulan sharing session komunitas CC Level Up! seputar teknologi, bisnis, desain, dan pengembangan diri.'
     },
-    { property: 'og:title', content: 'Arsip Sharing Session — CC Level Up!' },
+    { property: 'og:title', content: 'Sesi Belajar — CC Level Up!' },
     { property: 'og:url', content: getCanonicalUrl('/sessions') }
   ]
 }))
@@ -54,9 +61,9 @@ const {
 <template>
   <div class="max-w-6xl mx-auto px-4 py-8 md:py-12">
     <header class="mb-8 md:mb-10">
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">Arsip Sesi</h1>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">Sesi Belajar</h1>
       <p class="mt-2 text-base md:text-lg text-gray-600">
-        Jelajahi rekaman sharing session dari komunitas kami.
+        Temukan dan pelajari rekaman sharing session dari komunitas kami.
       </p>
     </header>
 
@@ -66,27 +73,31 @@ const {
     <!-- Search & Filter Bar (Sprint 4 Discovery) -->
     <div class="mb-10 space-y-4">
       <div class="relative max-w-xl">
-        <input
-          v-model="searchQuery"
-          type="search"
-          aria-label="Cari sharing session"
-          placeholder="Cari judul, topik, pembicara, atau ringkasan..."
-          class="w-full px-4 py-3 pl-11 rounded-xl border border-gray-300 bg-white text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm transition-all"
-          @input="(e: any) => setSearchQuery(e.target.value)"
-        />
-        <svg
-          class="absolute left-3.5 top-3.5 w-4 h-4 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        <IconField class="w-full">
+          <InputIcon>
+            <Search class="w-4 h-4 text-gray-400" />
+          </InputIcon>
+          <InputText
+            :model-value="searchQuery"
+            type="search"
+            aria-label="Cari sharing session"
+            placeholder="Cari judul, topik, pembicara, atau ringkasan..."
+            class="search-input-field w-full !rounded-xl !pl-10 !pr-10 !py-3 text-sm !border-gray-300 focus:!border-emerald-500 focus:!ring-2 focus:!ring-emerald-500/20 shadow-sm transition-all"
+            @input="(e: any) => setSearchQuery(e.target.value)"
           />
-        </svg>
+          <InputIcon
+            v-if="searchQuery"
+            role="button"
+            tabindex="0"
+            aria-label="Hapus teks pencarian"
+            class="cursor-pointer focus:outline-none focus:ring-1 focus:ring-emerald-500 rounded p-0.5"
+            @click="setSearchQuery('')"
+            @keydown.enter="setSearchQuery('')"
+            @keydown.space.prevent="setSearchQuery('')"
+          >
+            <Times class="w-3.5 h-3.5 text-gray-400 hover:text-gray-600 transition-colors" />
+          </InputIcon>
+        </IconField>
       </div>
 
       <!-- Category Filter Pills & Direct Links -->
@@ -96,44 +107,47 @@ const {
         role="group"
         aria-label="Filter berdasarkan kategori"
       >
-        <button
+        <Button
           type="button"
+          label="Semua Kategori"
+          rounded
+          size="small"
+          :severity="!selectedCategory ? 'success' : 'secondary'"
+          :variant="!selectedCategory ? undefined : 'outlined'"
           :aria-pressed="!selectedCategory"
-          :class="[
-            'px-3.5 py-1.5 text-xs font-medium rounded-full transition-colors whitespace-nowrap cursor-pointer',
-            !selectedCategory
-              ? 'bg-emerald-700 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          ]"
+          class="!text-xs !font-semibold !px-4 !py-2 whitespace-nowrap cursor-pointer transition-all duration-200"
+          :class="!selectedCategory ? '!bg-emerald-600 !border-emerald-600 !text-white shadow-xs' : '!bg-white !text-gray-700 !border-gray-200 hover:!bg-gray-50'"
           @click="setCategory('')"
-        >
-          Semua Kategori
-        </button>
+        />
 
         <div v-for="cat in categories" :key="cat.id" class="inline-flex items-center">
-          <button
+          <Button
             type="button"
+            :label="cat.nama"
+            rounded
+            size="small"
+            :severity="selectedCategory === cat.slug ? 'success' : 'secondary'"
+            :variant="selectedCategory === cat.slug ? undefined : 'outlined'"
             :aria-pressed="selectedCategory === cat.slug"
-            :class="[
-              'px-3.5 py-1.5 text-xs font-medium rounded-full transition-colors whitespace-nowrap cursor-pointer',
-              selectedCategory === cat.slug
-                ? 'bg-emerald-700 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            ]"
+            class="!text-xs !font-semibold !px-4 !py-2 whitespace-nowrap cursor-pointer transition-all duration-200"
+            :class="selectedCategory === cat.slug ? '!bg-emerald-600 !border-emerald-600 !text-white shadow-xs' : '!bg-white !text-gray-700 !border-gray-200 hover:!bg-gray-50'"
             @click="setCategory(cat.slug)"
-          >
-            {{ cat.nama }}
-          </button>
+          />
         </div>
 
-        <button
-          v-if="isFiltering"
-          type="button"
-          class="ml-2 text-xs text-red-600 hover:underline cursor-pointer whitespace-nowrap"
-          @click="clearFilters"
-        >
-          Reset Filter
-        </button>
+        <Transition name="fade-slide">
+          <Button
+            v-if="isFiltering"
+            type="button"
+            label="Reset Filter"
+            severity="danger"
+            variant="text"
+            size="small"
+            rounded
+            class="!text-xs !font-medium !text-rose-600 hover:!text-rose-700 !px-3 !py-1.5 whitespace-nowrap transition-all cursor-pointer"
+            @click="clearFilters"
+          />
+        </Transition>
       </div>
 
       <!-- Error State for Categories/Search Index Loading -->
@@ -144,13 +158,14 @@ const {
         <p class="text-xs text-amber-800">
           Beberapa data pencarian atau kategori belum berhasil dimuat.
         </p>
-        <button
+        <Button
           type="button"
-          class="text-xs font-medium text-amber-900 underline hover:text-amber-700 cursor-pointer"
+          label="Muat Ulang"
+          variant="link"
+          size="small"
+          class="!text-xs !font-medium !text-amber-900 !p-0 underline hover:!text-amber-700 cursor-pointer"
           @click="retryAll"
-        >
-          Muat Ulang
-        </button>
+        />
       </div>
     </div>
 
@@ -190,48 +205,63 @@ const {
         <p class="mt-2 text-sm text-gray-500">
           Coba kata kunci pencarian lain atau pilih kategori yang berbeda.
         </p>
-        <button
+        <Button
           type="button"
-          class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-emerald-600 hover:bg-emerald-700 cursor-pointer"
+          label="Tampilkan Semua Sesi"
+          severity="success"
+          size="small"
+          class="mt-4 !bg-emerald-600 hover:!bg-emerald-700 !border-emerald-600 cursor-pointer"
           @click="clearFilters"
-        >
-          Tampilkan Semua Sesi
-        </button>
+        />
       </div>
 
       <div v-else>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <SessionCard v-for="session in searchResults" :key="session.id" :session="session" />
-        </div>
+        <Transition name="fade-container" mode="out-in">
+          <div :key="`${selectedCategory}-${searchQuery}-${searchPage}`" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <SessionCard v-for="session in searchResults" :key="session.id" :session="session" />
+          </div>
+        </Transition>
 
         <!-- Pagination Hasil Pencarian Client-Side -->
-        <nav
-          v-if="totalPages > 1"
-          class="mt-12 flex items-center justify-center gap-2"
-          aria-label="Navigasi Halaman Pencarian"
-        >
-          <button
-            type="button"
-            :disabled="searchPage <= 1"
-            class="px-3.5 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
-            @click="changeSearchPage(searchPage - 1)"
+        <div v-if="totalPages > 1" class="mt-12 flex justify-center">
+          <Paginator
+            :rows="9"
+            :total-records="totalFiltered"
+            :first="(searchPage - 1) * 9"
+            class="!bg-transparent !p-0"
+            @page="(e) => changeSearchPage(e.page + 1)"
           >
-            Sebelumnya
-          </button>
+            <template #container="{ prevPageCallback, nextPageCallback }">
+              <nav class="flex items-center justify-center gap-2" aria-label="Navigasi Halaman Pencarian">
+                <Button
+                  type="button"
+                  label="Sebelumnya"
+                  variant="outlined"
+                  severity="secondary"
+                  size="small"
+                  :disabled="searchPage <= 1"
+                  class="!text-sm !font-medium !text-gray-700 !bg-white hover:!bg-gray-50 !border-gray-300 cursor-pointer"
+                  @click="prevPageCallback"
+                />
 
-          <span class="px-4 py-2 text-sm text-gray-700 font-medium">
-            Halaman {{ searchPage }} dari {{ totalPages }}
-          </span>
+                <span class="px-4 py-2 text-sm text-gray-700 font-medium">
+                  Halaman {{ searchPage }} dari {{ totalPages }}
+                </span>
 
-          <button
-            type="button"
-            :disabled="searchPage >= totalPages"
-            class="px-3.5 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
-            @click="changeSearchPage(searchPage + 1)"
-          >
-            Selanjutnya
-          </button>
-        </nav>
+                <Button
+                  type="button"
+                  label="Selanjutnya"
+                  variant="outlined"
+                  severity="secondary"
+                  size="small"
+                  :disabled="searchPage >= totalPages"
+                  class="!text-sm !font-medium !text-gray-700 !bg-white hover:!bg-gray-50 !border-gray-300 cursor-pointer"
+                  @click="nextPageCallback"
+                />
+              </nav>
+            </template>
+          </Paginator>
+        </div>
       </div>
     </div>
 
@@ -268,13 +298,14 @@ const {
         <p class="mt-2 text-sm text-red-600">
           Terjadi kendala saat mengambil data sesi. Silakan coba kembali.
         </p>
-        <button
+        <Button
           type="button"
-          class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
+          label="Coba Lagi"
+          severity="danger"
+          size="small"
+          class="mt-4 cursor-pointer"
           @click="() => refresh()"
-        >
-          Coba Lagi
-        </button>
+        />
       </div>
 
       <!-- Empty state -->
@@ -308,39 +339,86 @@ const {
 
       <!-- Content grid -->
       <div v-else>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <SessionCard v-for="session in sessions" :key="session.id" :session="session" />
-        </div>
+        <Transition name="fade-container" mode="out-in">
+          <div :key="`archive-page-${currentPage}`" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <SessionCard v-for="session in sessions" :key="session.id" :session="session" />
+          </div>
+        </Transition>
 
         <!-- Pagination Normal -->
-        <nav
-          v-if="pagination.totalPages > 1"
-          class="mt-12 flex items-center justify-center gap-2"
-          aria-label="Navigasi Halaman"
-        >
-          <button
-            type="button"
-            :disabled="currentPage <= 1"
-            class="px-3.5 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
-            @click="changePage(currentPage - 1)"
+        <div v-if="pagination.totalPages > 1" class="mt-12 flex justify-center">
+          <Paginator
+            :rows="pagination.limit"
+            :total-records="pagination.total"
+            :first="(currentPage - 1) * pagination.limit"
+            class="!bg-transparent !p-0"
+            @page="(e) => changePage(e.page + 1)"
           >
-            Sebelumnya
-          </button>
+            <template #container="{ prevPageCallback, nextPageCallback }">
+              <nav class="flex items-center justify-center gap-2" aria-label="Navigasi Halaman">
+                <Button
+                  type="button"
+                  label="Sebelumnya"
+                  variant="outlined"
+                  severity="secondary"
+                  size="small"
+                  :disabled="currentPage <= 1"
+                  class="!text-sm !font-medium !text-gray-700 !bg-white hover:!bg-gray-50 !border-gray-300 cursor-pointer"
+                  @click="prevPageCallback"
+                />
 
-          <span class="px-4 py-2 text-sm text-gray-700 font-medium">
-            Halaman {{ currentPage }} dari {{ pagination.totalPages }}
-          </span>
+                <span class="px-4 py-2 text-sm text-gray-700 font-medium">
+                  Halaman {{ currentPage }} dari {{ pagination.totalPages }}
+                </span>
 
-          <button
-            type="button"
-            :disabled="currentPage >= pagination.totalPages"
-            class="px-3.5 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
-            @click="changePage(currentPage + 1)"
-          >
-            Selanjutnya
-          </button>
-        </nav>
+                <Button
+                  type="button"
+                  label="Selanjutnya"
+                  variant="outlined"
+                  severity="secondary"
+                  size="small"
+                  :disabled="currentPage >= pagination.totalPages"
+                  class="!text-sm !font-medium !text-gray-700 !bg-white hover:!bg-gray-50 !border-gray-300 cursor-pointer"
+                  @click="nextPageCallback"
+                />
+              </nav>
+            </template>
+          </Paginator>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+/* Sembunyikan tombol cancel bawaan browser agar tidak duplikat dengan icon silang kustom */
+:deep(.search-input-field)::-webkit-search-cancel-button,
+:deep(.search-input-field)::-webkit-search-decoration,
+:deep(.search-input-field)::-webkit-search-results-button,
+:deep(.search-input-field)::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.25s ease-out;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+
+.fade-container-enter-active,
+.fade-container-leave-active {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.fade-container-enter-from,
+.fade-container-leave-to {
+  opacity: 0;
+}
+</style>

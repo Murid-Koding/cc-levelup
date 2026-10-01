@@ -4,7 +4,7 @@ test.describe('public session archive', () => {
   test('displays published sessions and excludes drafts', async ({ page }) => {
     await page.goto('/sessions')
 
-    await expect(page.getByRole('heading', { level: 1, name: 'Arsip Sesi' })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 1, name: 'Sesi Belajar' })).toBeVisible()
 
     // Verifikasi sesi published muncul
     await expect(page.getByText('Mengembangkan Kebiasaan Menulis Teknis')).toBeVisible()
@@ -19,7 +19,7 @@ test.describe('public session archive', () => {
     await page.evaluate(() => window.scrollTo(0, 100))
     await page.getByRole('link', { name: 'Sesi' }).click()
     await expect(page).toHaveURL(/\/sessions/)
-    await expect(page.getByRole('heading', { level: 1, name: 'Arsip Sesi' })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 1, name: 'Sesi Belajar' })).toBeVisible()
   })
 
   test('paginates between page 1 and page 2', async ({ page }) => {
