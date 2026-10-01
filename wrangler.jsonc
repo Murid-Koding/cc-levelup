@@ -8,8 +8,21 @@
     {
       "binding": "DB",
       "database_name": "cc-levelup-db",
-      "database_id": "00000000000000000000000000000000",
+      "database_id": "d514cfe6-769c-42ae-983f-93670b3d8eb6",
       "migrations_dir": "migrations"
     }
-  ]
+  ],
+  "env": {
+    "preview": {
+      "name": "cc-levelup",
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "cc-levelup-db-dev",
+          "database_id": "daec310c-7dfe-4a8e-b1c3-55e08ae5501d",
+          "migrations_dir": "migrations"
+        }
+      ]
+    }
+  }
 }

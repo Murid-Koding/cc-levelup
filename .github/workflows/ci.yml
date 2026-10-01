@@ -64,4 +64,9 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Run E2E tests
+        env:
+          HOST: '0.0.0.0'
+          PORT: 3000
+          NITRO_HOST: '0.0.0.0'
+          NITRO_PORT: 3000
         run: pnpm test:e2e
