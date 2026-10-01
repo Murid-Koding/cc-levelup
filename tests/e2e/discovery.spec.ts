@@ -4,7 +4,7 @@ test.describe('Discovery & Search Features', () => {
   test('filters sessions via client-side search query without extra API calls per keystroke', async ({
     page
   }) => {
-    await page.goto('/sesi', { waitUntil: 'networkidle' })
+    await page.goto('/sessions', { waitUntil: 'networkidle' })
 
     const searchInput = page.getByRole('searchbox', { name: 'Cari sharing session' })
     await expect(searchInput).toBeVisible()
@@ -43,7 +43,7 @@ test.describe('Discovery & Search Features', () => {
   test('filters sessions by clicking category pill and provides category page link', async ({
     page
   }) => {
-    await page.goto('/sesi', { waitUntil: 'networkidle' })
+    await page.goto('/sessions', { waitUntil: 'networkidle' })
 
     // Klik kategori "Desain"
     const desainButton = page.getByRole('button', { name: 'Desain' })
@@ -62,12 +62,12 @@ test.describe('Discovery & Search Features', () => {
     await expect(topicLink).toBeVisible()
     await topicLink.click()
 
-    await expect(page).toHaveURL(/\/kategori\/desain/)
+    await expect(page).toHaveURL(/\/categories\/desain/)
     await expect(page.getByRole('heading', { level: 1, name: 'Desain' })).toBeVisible()
   })
 
-  test('navigates to standalone shareable category page /kategori/{slug}', async ({ page }) => {
-    const res = await page.goto('/kategori/teknologi', { waitUntil: 'networkidle' })
+  test('navigates to standalone shareable category page /categories/{slug}', async ({ page }) => {
+    const res = await page.goto('/categories/teknologi', { waitUntil: 'networkidle' })
     expect(res?.status()).toBe(200)
 
     // Heading nama kategori
@@ -82,7 +82,7 @@ test.describe('Discovery & Search Features', () => {
   })
 
   test('returns 404 response status for non-existent category page', async ({ page }) => {
-    const res = await page.goto('/kategori/kategori-palsu', { waitUntil: 'networkidle' })
+    const res = await page.goto('/categories/kategori-palsu', { waitUntil: 'networkidle' })
     expect(res?.status()).toBe(404)
 
     await expect(

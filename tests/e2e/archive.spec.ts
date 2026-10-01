@@ -2,9 +2,9 @@ import { test, expect } from '@playwright/test'
 
 test.describe('public session archive', () => {
   test('displays published sessions and excludes drafts', async ({ page }) => {
-    await page.goto('/sesi')
+    await page.goto('/sessions')
 
-    await expect(page.getByRole('heading', { level: 1, name: 'Arsip Sesi' })).toBeVisible()
+    await expect(page.getByRole('heading', { level: 1, name: 'Sesi Belajar' })).toBeVisible()
 
     // Verifikasi sesi published muncul
     await expect(page.getByText('Mengembangkan Kebiasaan Menulis Teknis')).toBeVisible()
@@ -16,13 +16,14 @@ test.describe('public session archive', () => {
 
   test('navigates from header to archive', async ({ page }) => {
     await page.goto('/')
+    await page.evaluate(() => window.scrollTo(0, 100))
     await page.getByRole('link', { name: 'Sesi' }).click()
-    await expect(page).toHaveURL(/\/sesi/)
-    await expect(page.getByRole('heading', { level: 1, name: 'Arsip Sesi' })).toBeVisible()
+    await expect(page).toHaveURL(/\/sessions/)
+    await expect(page.getByRole('heading', { level: 1, name: 'Sesi Belajar' })).toBeVisible()
   })
 
   test('paginates between page 1 and page 2', async ({ page }) => {
-    await page.goto('/sesi', { waitUntil: 'networkidle' })
+    await page.goto('/sessions', { waitUntil: 'networkidle' })
 
     // Page 1 memiliki 9 sesi (limit default ViewModel = 9, total published = 12)
     await expect(page.getByText(/Halaman 1 dari 2/)).toBeVisible()
@@ -47,7 +48,7 @@ test.describe('public session archive', () => {
   })
 
   test('displays out-of-range message and returns to page 1', async ({ page }) => {
-    await page.goto('/sesi?page=999')
+    await page.goto('/sessions?page=999')
 
     await expect(
       page.getByRole('heading', { level: 2, name: 'Halaman tidak tersedia' })
@@ -58,7 +59,7 @@ test.describe('public session archive', () => {
     await expect(resetLink).toBeVisible()
     await resetLink.click()
 
-    await expect(page).toHaveURL(/\/sesi/)
+    await expect(page).toHaveURL(/\/sessions/)
     await expect(page.getByText('Mengembangkan Kebiasaan Menulis Teknis')).toBeVisible()
   })
 })

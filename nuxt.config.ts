@@ -11,6 +11,11 @@ export default defineNuxtConfig({
   typescript: {
     strict: true
   },
+  app: {
+    head: {
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+    }
+  },
   modules: ['@unocss/nuxt', '@primevue/nuxt-module', '@nuxtjs/i18n', '@nuxt/eslint'],
   nitro: {
     preset: 'cloudflare_module'
@@ -25,7 +30,10 @@ export default defineNuxtConfig({
       },
       ripple: true
     },
-    autoImport: true
+    autoImport: true,
+    directives: {
+      include: ['AnimateOnScroll']
+    }
   },
   i18n: {
     bundle: {
