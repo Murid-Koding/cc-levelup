@@ -17,7 +17,7 @@
       "name": "cc-levelup",
       "routes": [
         {
-          "pattern": "dev.cclevelup.web.id/*",
+          "pattern": "dev.cclevelup.web.id",
           "custom_domain": true
         }
       ],
