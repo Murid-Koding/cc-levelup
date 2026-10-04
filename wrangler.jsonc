@@ -15,6 +15,12 @@
   "env": {
     "preview": {
       "name": "cc-levelup",
+      "routes": [
+        {
+          "pattern": "dev.cclevelup.web.id/*",
+          "custom_domain": true
+        }
+      ],
       "d1_databases": [
         {
           "binding": "DB",
