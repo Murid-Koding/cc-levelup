@@ -12,21 +12,26 @@
       "migrations_dir": "migrations"
     }
   ],
+  "routes": [
+    {
+      "pattern": "cclevelup.web.id",
+      "custom_domain": true
+    }
+  ],
   "env": {
     "preview": {
-      "name": "cc-levelup",
-      "routes": [
-        {
-          "pattern": "dev.cclevelup.web.id",
-          "custom_domain": true
-        }
-      ],
       "d1_databases": [
         {
           "binding": "DB",
           "database_name": "cc-levelup-db-dev",
           "database_id": "daec310c-7dfe-4a8e-b1c3-55e08ae5501d",
           "migrations_dir": "migrations"
+        }
+      ],
+      "routes": [
+        {
+          "pattern": "dev.cclevelup.web.id",
+          "custom_domain": true
         }
       ]
     }
