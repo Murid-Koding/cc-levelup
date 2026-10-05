@@ -25,7 +25,7 @@ useHead({
   <div class="max-w-3xl mx-auto px-4 py-8 md:py-16">
     <header class="mb-10 text-center">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
-        Tentang CC Level Up!
+        Tentang CC Level UP!
       </h1>
       <p class="mt-3 text-lg text-gray-600">
         Inisiatif komunitas untuk saling berbagi wawasan, praktik terbaik, dan pengalaman.

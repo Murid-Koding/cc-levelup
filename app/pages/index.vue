@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import AngleDoubleDown from '@primeicons/vue/angle-double-down'
 import ArrowCircleRight from '@primeicons/vue/arrow-circle-right'
-import ArrowUp from '@primeicons/vue/arrow-up';
-import ScrollTop from 'primevue/scrolltop';
+import ArrowUp from '@primeicons/vue/arrow-up'
+import ScrollTop from 'primevue/scrolltop'
 import Sparkles from '@primeicons/vue/sparkles'
+
+import LogoMotion from '~~/app/features/home/components/LogoMotion.vue'
+
 import vAnimateonscroll from 'primevue/animateonscroll'
 import UpcomingLumaSection from '~~/app/features/home/components/UpcomingLumaSection.vue'
 import { getCanonicalUrl } from '~~/shared/utils/seo'
@@ -42,6 +45,7 @@ useHead({
           <Sparkles class="w-3.5 h-3.5" />
           <span>Komunitas Belajar Terbuka</span>
         </span>
+
         <h1
           v-animateonscroll="{
             enterClass: 'animate-fadeinup animate-delay-100',
@@ -49,8 +53,11 @@ useHead({
           }"
           class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 tracking-tight leading-tight"
         >
-          CC Level Up!
+          <LogoMotion />
+          <br />
+          Level UP!
         </h1>
+
         <p
           v-animateonscroll="{
             enterClass: 'animate-fadeinup animate-delay-200',
@@ -104,10 +111,7 @@ useHead({
       <UpcomingLumaSection />
     </div>
 
-    <ScrollTop
-      target="parent"
-      :threshold="100"
-    >
+    <ScrollTop target="parent" :threshold="100">
       <template #icon>
         <ArrowUp />
       </template>
