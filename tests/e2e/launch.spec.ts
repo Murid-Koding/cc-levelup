@@ -7,13 +7,14 @@ test.describe('Launch Critical Paths', () => {
     await expect(page.getByRole('heading', { level: 1, name: /CC Level Up!/ })).toBeVisible()
 
     // 2. Navigation to archive
-    await page.getByRole('link', { name: /Jelajahi Arsip Sesi/ }).click()
-    await expect(page).toHaveURL(/\/sesi$/)
-    await expect(page.getByRole('heading', { level: 1, name: 'Arsip Sesi' })).toBeVisible()
+    await page.evaluate(() => window.scrollTo(0, 100))
+    await page.getByRole('link', { name: /^Sesi$/ }).click()
+    await expect(page).toHaveURL(/\/sessions$/)
+    await expect(page.getByRole('heading', { level: 1, name: 'Sesi Belajar' })).toBeVisible()
 
     // 3. Navigation to about page
     await page.getByRole('link', { name: 'Tentang' }).click()
-    await expect(page).toHaveURL(/\/tentang$/)
+    await expect(page).toHaveURL(/\/about$/)
     await expect(
       page.getByRole('heading', { level: 1, name: 'Tentang CC Level Up!' })
     ).toBeVisible()
@@ -31,7 +32,7 @@ test.describe('Launch Critical Paths', () => {
     expect(body.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(true)
     expect(body).toContain('<urlset')
     expect(body).toContain('https://cclevelup.web.id')
-    expect(body).toContain('<loc>https://cclevelup.web.id/sesi</loc>')
+    expect(body).toContain('<loc>https://cclevelup.web.id/sessions</loc>')
     // Invariant: draft sessions must never be listed in sitemap
     expect(body).not.toContain('draft-sesi-belum-tayang')
   })

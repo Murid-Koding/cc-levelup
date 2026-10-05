@@ -4,8 +4,8 @@ import { getCanonicalUrl, SITE_URL } from './seo'
 describe('SEO utilities', () => {
   it('constructs consistent canonical URL from relative paths', () => {
     expect(getCanonicalUrl('/')).toBe('https://cclevelup.web.id/')
-    expect(getCanonicalUrl('/sesi')).toBe('https://cclevelup.web.id/sesi')
-    expect(getCanonicalUrl('sesi/deep-dive')).toBe('https://cclevelup.web.id/sesi/deep-dive')
+    expect(getCanonicalUrl('/sessions')).toBe('https://cclevelup.web.id/sessions')
+    expect(getCanonicalUrl('sessions/deep-dive')).toBe('https://cclevelup.web.id/sessions/deep-dive')
   })
 
   it('uses cclevelup.web.id as locked primary domain', () => {

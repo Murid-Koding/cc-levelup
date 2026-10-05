@@ -17,8 +17,12 @@
     "db:backup": "node scripts/backup-d1.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "node scripts/db-local.mjs migrate",
+    "db:migrate:preview": "wrangler d1 migrations apply cc-levelup-db-dev --remote --env preview",
     "db:migrate:prod": "wrangler d1 migrations apply cc-levelup-db --remote",
-    "db:seed:local": "node scripts/db-local.mjs seed"
+    "db:seed:local": "node scripts/db-local.mjs seed",
+    "db:seed:preview": "wrangler d1 execute cc-levelup-db-dev --remote --file=./server/db/seed.sql --env preview",
+    "deploy:preview": "nuxt build && wrangler deploy .output/server/index.mjs --assets .output/public --env preview",
+    "deploy:prod": "nuxt build && wrangler deploy .output/server/index.mjs --assets .output/public"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
@@ -29,6 +33,7 @@
   },
   "dependencies": {
     "@nuxtjs/i18n": "^9.0.0",
+    "@primeicons/vue": "^8.0.2",
     "@primevue/core": "^4.3.1",
     "@primevue/forms": "^4.3.1",
     "@primevue/nuxt-module": "^4.3.1",

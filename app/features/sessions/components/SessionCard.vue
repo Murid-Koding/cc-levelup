@@ -47,7 +47,7 @@ function onImageError() {
     class="flex flex-col h-full bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
   >
     <NuxtLink
-      :to="`/sesi/${session.slug}`"
+      :to="`/sessions/${session.slug}`"
       :aria-label="`Tonton rekaman sesi: ${session.judul}`"
       class="block relative aspect-video bg-gray-100 overflow-hidden group focus:outline-none focus:ring-2 focus:ring-emerald-500"
     >
@@ -93,7 +93,7 @@ function onImageError() {
 
       <h2 class="text-lg font-semibold text-gray-900 line-clamp-2 mb-2">
         <NuxtLink
-          :to="`/sesi/${session.slug}`"
+          :to="`/sessions/${session.slug}`"
           class="hover:text-emerald-600 transition-colors focus:outline-none focus:ring-1 focus:ring-emerald-500 rounded"
         >
           {{ session.judul }}

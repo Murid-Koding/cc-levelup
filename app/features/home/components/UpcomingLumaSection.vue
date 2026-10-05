@@ -2,7 +2,7 @@
 const route = useRoute()
 const { data, status } = await useFetch<{ lumaEmbedUrl: string }>('/api/settings/luma')
 
-const isArchivePage = computed(() => route.path.startsWith('/sesi'))
+const isArchivePage = computed(() => route.path.startsWith('/sessions'))
 
 // Strict origin validation to prevent arbitrary URL / javascript: URI iframe execution
 const safeLumaEmbedUrl = computed(() => {
@@ -91,10 +91,10 @@ const isLoading = computed(() => status.value === 'pending')
         sesi selanjutnya.
       </p>
 
-      <!-- Only show link if visitor is on home page to prevent dead self-link on /sesi -->
+      <!-- Only show link if visitor is on home page to prevent dead self-link on /sessions -->
       <NuxtLink
         v-if="!isArchivePage"
-        to="/sesi"
+        to="/sessions"
         class="inline-flex items-center text-sm font-medium text-emerald-700 hover:text-emerald-800 hover:underline"
       >
         Lihat Rekaman Sesi Sebelumnya &rarr;

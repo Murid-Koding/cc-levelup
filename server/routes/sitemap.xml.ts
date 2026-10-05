@@ -27,8 +27,8 @@ export default defineEventHandler(async (event) => {
 
   const sitemapItems: SitemapItem[] = [
     { loc: '/', changefreq: 'daily', priority: 1.0 },
-    { loc: '/sesi', changefreq: 'daily', priority: 0.9 },
-    { loc: '/tentang', changefreq: 'monthly', priority: 0.5 }
+    { loc: '/sessions', changefreq: 'daily', priority: 0.9 },
+    { loc: '/about', changefreq: 'monthly', priority: 0.5 }
   ]
 
   for (const session of publishedSessions) {
@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
       ? new Date(session.updatedAt).toISOString().split('T')[0]
       : session.tanggal
     sitemapItems.push({
-      loc: `/sesi/${session.slug}`,
+      loc: `/sessions/${session.slug}`,
       lastmod: lastmodDate,
       changefreq: 'weekly',
       priority: 0.8
@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
 
   for (const category of allCategories) {
     sitemapItems.push({
-      loc: `/kategori/${category.slug}`,
+      loc: `/categories/${category.slug}`,
       changefreq: 'weekly',
       priority: 0.7
     })
