@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import AppLogo from '~/components/shared/AppLogo.vue'
+import Message from 'primevue/message'
+import Sparkles from '@primeicons/vue/sparkles'
 
 const route = useRoute()
 const isHome = computed(() => route.path === '/')
 const isScrolled = ref(false)
+const isDev = import.meta.dev
 
 const onScroll = () => {
   if (typeof window !== 'undefined') {
@@ -44,14 +47,22 @@ onUnmounted(() => {
           : 'sticky top-0'
       ]"
     >
+      <div v-if="isDev" class="text-centermx-auto">
+        <Message severity="info" size="small" closable>
+          <template #icon>
+            <Sparkles />
+          </template>
+          Mode Development
+        </Message>
+      </div>
       <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
         <NuxtLink
           to="/"
           aria-label="CC Level Up! — Beranda"
           class="flex items-center text-gray-900 hover:text-emerald-600 focus:outline-none focus:ring-emerald-500 rounded transition-colors"
         >
-           <AppLogo class="h-8 w-auto text-current" />
-           <span class="sr-only">CC Level Up!</span>
+          <AppLogo class="h-8 w-auto text-current" />
+          <span class="sr-only">CC Level Up!</span>
         </NuxtLink>
         <nav class="flex items-center gap-6 text-sm text-gray-600">
           <NuxtLink
@@ -76,7 +87,8 @@ onUnmounted(() => {
 
     <footer class="border-t border-gray-200">
       <div class="max-w-6xl mx-auto px-4 py-6 text-sm text-gray-500">
-        &copy; {{ new Date().getFullYear() }} CC Level Up! &mdash; Komunitas belajar dan berbagi wawasan.
+        &copy; {{ new Date().getFullYear() }} CC Level Up! &mdash; Komunitas belajar dan berbagi
+        wawasan.
       </div>
     </footer>
   </div>
