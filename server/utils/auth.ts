@@ -1,4 +1,4 @@
-import { createError, getHeader, type H3Event } from 'h3'
+import { createError, getCookie, getHeader, type H3Event } from 'h3'
 import { validateAssertionToken } from './jwt'
 
 export async function verifyAdminAccess(event: H3Event): Promise<void> {
@@ -6,7 +6,8 @@ export async function verifyAdminAccess(event: H3Event): Promise<void> {
     return
   }
 
-  const assertion = getHeader(event, 'cf-access-jwt-assertion')
+  const assertion =
+    getHeader(event, 'cf-access-jwt-assertion') || getCookie(event, 'CF_Authorization')
   const cloudflare = event.context?.cloudflare as { env?: Record<string, string> } | undefined
   const expectedAud = cloudflare?.env?.CF_ACCESS_AUD || process.env.CF_ACCESS_AUD || ''
   const expectedIss = cloudflare?.env?.CF_ACCESS_ISS || process.env.CF_ACCESS_ISS

@@ -60,9 +60,10 @@ const isLoading = computed(() => status.value === 'pending')
     >
       <iframe
         :src="safeLumaEmbedUrl"
-        class="w-full min-h-[450px] border-0"
+        class="w-full min-h-[250px] border-0 scale-100"
         title="Jadwal Event Sharing Session Luma"
         allowfullscreen
+        frameborder="0"
         sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
       />
     </div>
